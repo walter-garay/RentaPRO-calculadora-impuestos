@@ -39,7 +39,7 @@
             <li>Soporte técnico por correo</li>
           </ul>
           <div class="precio">
-            S/. 30<span>/mes</span>
+            S/. 30<span>/mes </span>
           </div>
           <button class="boton boton-primario" @click="seleccionarPlan('plus')">Elegir</button>
         </div>
@@ -64,7 +64,7 @@
     </div>
   </template>
 
-  
+
   <style scoped>
   * {
     margin: 0;
