@@ -33,8 +33,8 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 # Copy package.json files for better caching
 COPY package*.json ./
 
-# Install Node.js dependencies
-RUN npm ci --only=production
+# Install Node.js dependencies (including dev dependencies for build)
+RUN npm ci
 
 # Copy the rest of the application
 COPY . .
