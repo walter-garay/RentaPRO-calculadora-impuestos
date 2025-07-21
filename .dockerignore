@@ -4,6 +4,8 @@ npm-debug.log
 .gitignore
 .env.local
 .env.*.local
+.env
+.env.*
 README.md
 Dockerfile
 .dockerignore

@@ -34,3 +34,6 @@ services:
         value: root
       - key: DB_PASSWORD
         value: d1EFMUBCLqDhwco7Mnxk5HDHZG6DvaBv
+    startCommand: |
+      php artisan migrate --force
+      php -S 0.0.0.0:8080 -t public/

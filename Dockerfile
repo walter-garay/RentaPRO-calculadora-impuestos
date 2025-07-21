@@ -45,10 +45,10 @@ RUN npm run build && npm prune --production
 RUN php artisan config:clear || true \
     && php artisan route:clear || true \
     && php artisan view:clear || true \
-    && php artisan cache:clear || true \
-    && php artisan config:cache || true \
-    && php artisan route:cache || true \
-    && php artisan view:cache || true
+    && php artisan cache:clear || true
+    # && php artisan config:cache || true \
+    # && php artisan route:cache || true \
+    # && php artisan view:cache || true
 
 # Run migrations on container startup
-CMD php artisan migrate --force && php -S 0.0.0.0:8080 -t public/
+CMD php artisan config:clear && php artisan migrate --force && php -S 0.0.0.0:8080 -t public/
