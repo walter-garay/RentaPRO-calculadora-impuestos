@@ -10,10 +10,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nodejs \
-    npm
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    npm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install mbstring exif pcntl bcmath gd
@@ -24,42 +22,40 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for better caching
+# Copy composer files and install PHP dependencies
 COPY composer.json composer.lock ./
-
-# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Copy package.json files for better caching
+# Copy package.json and install Node dependencies
 COPY package*.json ./
-
-# Install Node.js dependencies (including dev dependencies for build)
 RUN npm ci
 
-# Copy the rest of the application
+# Copy application files
 COPY . .
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage \
-    && chmod -R 755 /var/www/html/bootstrap/cache
+# Set proper permissions and create necessary directories
+RUN mkdir -p /var/www/html/storage/logs \
+    && mkdir -p /var/www/html/storage/framework/cache/data \
+    && mkdir -p /var/www/html/storage/framework/sessions \
+    && mkdir -p /var/www/html/storage/framework/views \
+    && mkdir -p /var/www/html/storage/app/public \
+    && mkdir -p /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Build assets
-RUN npm run build
+# Build assets and clean up
+RUN npm run build && npm prune --production
 
-# Generate application key if .env exists
-RUN if [ -f .env ]; then php artisan key:generate --force; fi
+# Laravel setup - Clear caches first, then rebuild
+RUN php artisan config:clear || true \
+    && php artisan route:clear || true \
+    && php artisan view:clear || true \
+    && php artisan cache:clear || true \
+    && php artisan config:cache || true \
+    && php artisan route:cache || true \
+    && php artisan view:cache || true
 
-# Cache Laravel configuration
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
-
-# Create storage link
-RUN php artisan storage:link || true
-
-# Expose port
+# Expose port and start with better error handling
 EXPOSE $PORT
-
-# Start the application
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD php -S 0.0.0.0:$PORT -t public/ || php artisan serve --host=0.0.0.0 --port=$PORT
