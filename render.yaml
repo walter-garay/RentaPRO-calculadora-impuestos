@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: laravel-app
+    runtime: php
+    buildCommand: |
+      composer install --no-dev
+      php artisan config:cache
+      php artisan route:cache
+      php artisan view:cache
+      npm install && npm run build
+    startCommand: php artisan serve --host 0.0.0.0 --port 10000
+    env: php
+    plan: free
+    branch: main
+    buildFilter: main
+    region: oregon

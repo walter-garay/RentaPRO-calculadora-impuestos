@@ -28,7 +28,26 @@ function handleImageError() {
 </script>
 
 <template>
-    <Head title="Calculadora de Impuestos RentaPRO" />
+    <Head>
+        <title>Calculadora de Impuestos RentaPRO</title>
+        <meta
+            name="description"
+            content="Calcula fácil y rápido tus impuestos de 4ta y 5ta categoría en Perú. Herramienta gratuita, precisa y moderna para trabajadores independientes y dependientes. Evita sorpresas y obtén tu informe al instante."
+        />
+        <meta
+            name="keywords"
+            content="calculadora impuestos, renta, Perú, 4ta categoría, 5ta categoría, declaración, SUNAT, trabajadores independientes, dependientes, UIT, deducciones, informe, online"
+        />
+        <meta property="og:title" content="Calculadora de Impuestos RentaPRO" />
+        <meta
+            property="og:description"
+            content="Calcula tus impuestos de 4ta y 5ta categoría en Perú de forma sencilla y rápida. Herramienta gratuita y moderna."
+        />
+        <meta property="og:image" content="/images/logo.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://tusitio.com/" />
+        <link rel="icon" type="image/png" href="/images/logo.png" />
+    </Head>
     <PublicLayout>
         <!-- Hero Section -->
         <main
