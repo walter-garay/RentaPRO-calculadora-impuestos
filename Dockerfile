@@ -2,13 +2,13 @@ FROM php:8.2-cli
 
 # Install system dependencies and Node.js LTS
 RUN apt-get update && \
-    apt-get install -y git curl zip unzip libpng-dev libonig-dev libxml2-dev && \
+    apt-get install -y git curl zip unzip libpng-dev libonig-dev libxml2-dev libpq-dev && \
     curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
     apt-get install -y nodejs && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install mbstring exif pcntl bcmath gd
+# Install PHP extensions (including PostgreSQL)
+RUN docker-php-ext-install mbstring exif pcntl bcmath gd pdo pdo_pgsql
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -41,7 +41,7 @@ RUN mkdir -p /var/www/html/storage/logs \
 # Build assets and clean up
 RUN npm run build && npm prune --production
 
-# Laravel setup - Clear caches first, then rebuild
+# Laravel setup - clear & cache configs
 RUN php artisan config:clear || true \
     && php artisan route:clear || true \
     && php artisan view:clear || true \
@@ -50,6 +50,5 @@ RUN php artisan config:clear || true \
     && php artisan route:cache || true \
     && php artisan view:cache || true
 
-# Expose port and start with better error handling
-EXPOSE 8080
-CMD php -S 0.0.0.0:8080 -t public/ || php artisan serve --host=0.0.0.0 --port=8080
+# Run migrations on container startup
+CMD php artisan migrate --force && php -S 0.0.0.0:8080 -t public/

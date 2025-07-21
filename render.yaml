@@ -1,27 +1,36 @@
 services:
   - type: web
-    name: rentapro-calculadora
-    env: php
-    buildCommand: composer install --no-dev --optimize-autoloader && npm install && npm run build && php artisan key:generate --force && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan storage:link
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
-envVars:
-  - key: APP_NAME
-    value: "RentaPRO - Calculador de impuesto a la renta de 4ta y 5ta categoría"
-  - key: APP_ENV
-    value: production
-  - key: APP_KEY
-    value: base64:zSuLNQDWgiAvy6w2kyT0oouQ3V/MAPV33V0VyKtAn4o=
-  - key: APP_DEBUG
-    value: false
-  - key: APP_URL
-    value: https://rentapro.onrender.com
-  - key: SESSION_DRIVER
-    value: file
-  - key: CACHE_STORE
-    value: file
-  - key: LOG_CHANNEL
-    value: errorlog
-  - key: VITE_APP_NAME
-    value: "RentaPRO - Calculador de impuesto a la renta de 4ta y 5ta categoría"
-  - key: DB_CONNECTION
-    value: none
+    name: rentapro
+    env: docker
+    plan: free  # Puedes omitir esta línea si estás usando el plan gratuito por defecto
+    envVars:
+      - key: APP_NAME
+        value: "RentaPRO"
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        value: base64:zSuLNQDWgiAvy6w2kyT0oouQ3V/MAPV33V0VyKtAn4o=
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://rentapro.onrender.com
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: LOG_CHANNEL
+        value: errorlog
+      - key: VITE_APP_NAME
+        value: "RentaPRO"
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: dpg-d1ututadbo4c73ev6ls0-a
+      - key: DB_PORT
+        value: 5432
+      - key: DB_DATABASE
+        value: calculo_rentas
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        value: d1EFMUBCLqDhwco7Mnxk5HDHZG6DvaBv
