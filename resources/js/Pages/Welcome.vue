@@ -1,5 +1,6 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from "@inertiajs/vue3";
+import PublicLayout from "@/Layouts/PublicLayout.vue";
 
 defineProps({
     canLogin: {
@@ -19,82 +20,185 @@ defineProps({
 });
 
 function handleImageError() {
-    document.getElementById('screenshot-container')?.classList.add('!hidden');
-    document.getElementById('docs-card')?.classList.add('!row-span-1');
-    document.getElementById('docs-card-content')?.classList.add('!flex-row');
-    document.getElementById('background')?.classList.add('!hidden');
+    document.getElementById("screenshot-container")?.classList.add("!hidden");
+    document.getElementById("docs-card")?.classList.add("!row-span-1");
+    document.getElementById("docs-card-content")?.classList.add("!flex-row");
+    document.getElementById("background")?.classList.add("!hidden");
 }
 </script>
 
 <template>
-    <Head title="Welcome" />
-    <div class="min-h-screen bg-gray-100">
-        <!-- Navbar -->
-        <header class="bg-white shadow-md py-4">
-            <div class="container mx-auto flex justify-between items-center px-4">
-                <!-- Logo -->
-                <a href="#" class="text-xl font-bold text-gray-800 flex items-center justify-center space-x-2">
-                    <img class="h-10" src="/images/logo.png" alt="">
-                    <p>RentaPRO</p>
-
-                </a>
-
-                <!-- Links -->
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#" class="text-gray-700 hover:text-blue-900 text-sm">¿Cómo funciona?</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-900 text-sm">Beneficios</a>
-                    <a href="#" class="text-gray-700 hover:text-blue-900 text-sm">Soporte</a>
-                </nav>
-
-                <!-- Botones -->
-                <nav v-if="canLogin" class="space-x-4">
-                    <Link
-                        v-if="$page.props.auth.user"
-                        :href="route('dashboard')"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                    >
-                        Dashboard
-                    </Link>
-
-                    <template v-else>
-                        <Link
-                            :href="route('login')"
-                            class="px-4 py-2 text-gray-600 border border-gray-400 rounded-md hover:bg-gray-200"
-                        >
-                            Iniciar sesión
-                        </Link>
-
-                        <Link
-                            v-if="canRegister"
-                            :href="route('register')"
-                            class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
-                        >
-                            Registrarse
-                        </Link>
-                    </template>
-                </nav>
-            </div>
-        </header>
-
+    <Head title="Calculadora de Impuestos RentaPRO" />
+    <PublicLayout>
         <!-- Hero Section -->
-        <main class="min-h-[80vh] flex flex-col md:flex-row items-center justify-center text-center md:text-left px-8 md:px-20 gap-10 ms-24">
+        <main
+            class="flex flex-col md:flex-row items-center justify-center text-center md:text-left px-4 md:px-20 gap-8 md:gap-10 w-full"
+            style="min-height: calc(100vh - 80px)"
+        >
             <!-- Texto -->
-            <div class="md:max-w-1/2 w-96">
-                <h1 class="text-5xl font-bold text-gray-800 leading-tight">Renta anual en segundos</h1>
-                <p class="mt-6 text-lg text-gray-600">
-                    Descubre en solo unos clics cuánto debes pagar en impuestos de 4ta y 5ta categoría evitando sorpresas.
+            <div
+                class="w-full md:max-w-xl lg:max-w-2xl flex flex-col justify-center items-center md:items-start md:ml-20 md:mr-10"
+                style="min-height: 400px"
+            >
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-gray-800 leading-tight mb-4"
+                >
+                    Renta anual en segundos
+                </h1>
+                <p class="mt-2 text-base md:text-lg text-gray-600 mb-6">
+                    ¿Trabajas en una empresa o eres independiente? Descubre en
+                    solo unos clics cuánto debes pagar en impuestos de 4ta y 5ta
+                    categoría evitando sorpresas.
                     <strong>Fácil, rápido y sin complicaciones.</strong>
                 </p>
-                <a href="#" class="mt-8 inline-block px-8 py-4 text-lg text-white font-bold bg-blue-600 rounded-md hover:bg-blue-700">
+                <a
+                    href="/calculadora"
+                    class="mt-2 inline-block px-8 py-4 text-base md:text-lg text-white font-bold bg-blue-600 rounded-md hover:bg-blue-700"
+                >
                     Calcular ahora <i class="ri-arrow-right-line"></i>
                 </a>
             </div>
 
             <!-- Imagen -->
-            <div class="w-full md:w-1/2 flex justify-center">
-                <img src="/images/tax.png" alt="Simulación de renta anual" class="w-[500px] md:w-[600px] max-w-full">
+            <div class="w-full flex justify-center items-center">
+                <img
+                    src="/images/tax.png"
+                    alt="Simulación de renta anual"
+                    class="w-full max-w-md md:max-w-xl lg:max-w-2xl"
+                    style="min-width: 220px; min-height: 220px"
+                />
             </div>
         </main>
-    </div>
+        <!-- Sección ¿Cómo funciona? -->
+        <section
+            id="como-funciona"
+            class="bg-white py-12 md:py-16 px-4 md:px-20 w-full"
+        >
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
+                    ¿Cómo funciona?
+                </h2>
+                <div class="flex flex-col md:flex-row items-center gap-8 mb-10">
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <img
+                            src="/images/cap-calculadora.png"
+                            alt="Vista de la calculadora"
+                            class="rounded-lg shadow-lg w-full max-w-xs md:max-w-md lg:max-w-lg"
+                        />
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <div class="grid grid-cols-1 gap-6 text-left">
+                            <div class="flex items-start gap-4">
+                                <span
+                                    class="inline-block bg-blue-100 text-blue-600 rounded-full p-3 text-2xl md:text-3xl font-bold"
+                                    >1</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-semibold mb-1 text-base md:text-lg"
+                                    >
+                                        Ingresa a la
+                                        <a
+                                            href="/calculadora"
+                                            class="text-blue-600 underline hover:text-blue-800"
+                                            >Calculadora</a
+                                        >
+                                    </p>
+                                    <p
+                                        class="text-gray-600 text-sm md:text-base"
+                                    >
+                                        Haz clic en el botón o en este
+                                        <a
+                                            href="/calculadora"
+                                            class="text-blue-600 underline hover:text-blue-800"
+                                            >enlace</a
+                                        >
+                                        para empezar.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span
+                                    class="inline-block bg-blue-100 text-blue-600 rounded-full p-3 text-2xl md:text-3xl font-bold"
+                                    >2</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-semibold mb-1 text-base md:text-lg"
+                                    >
+                                        Selecciona el año y valor de la UIT
+                                    </p>
+                                    <p
+                                        class="text-gray-600 text-sm md:text-base"
+                                    >
+                                        Elige el año de ejercicio o ingresa el
+                                        valor de la UIT si es personalizado.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span
+                                    class="inline-block bg-blue-100 text-blue-600 rounded-full p-3 text-2xl md:text-3xl font-bold"
+                                    >3</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-semibold mb-1 text-base md:text-lg"
+                                    >
+                                        Ingresa tus ingresos
+                                    </p>
+                                    <p
+                                        class="text-gray-600 text-sm md:text-base"
+                                    >
+                                        Registra tus ingresos de 4ta y 5ta
+                                        categoría, y tus gastos deducibles.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span
+                                    class="inline-block bg-blue-100 text-blue-600 rounded-full p-3 text-2xl md:text-3xl font-bold"
+                                    >4</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-semibold mb-1 text-base md:text-lg"
+                                    >
+                                        Calcula automáticamente
+                                    </p>
+                                    <p
+                                        class="text-gray-600 text-sm md:text-base"
+                                    >
+                                        El sistema calcula tus impuestos,
+                                        deducciones y te muestra un resumen
+                                        claro.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span
+                                    class="inline-block bg-blue-100 text-blue-600 rounded-full p-3 text-2xl md:text-3xl font-bold"
+                                    >5</span
+                                >
+                                <div>
+                                    <p
+                                        class="font-semibold mb-1 text-base md:text-lg"
+                                    >
+                                        Descarga tu informe
+                                    </p>
+                                    <p
+                                        class="text-gray-600 text-sm md:text-base"
+                                    >
+                                        Obtén un informe descargable y
+                                        recomendaciones para tu declaración
+                                        anual.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </PublicLayout>
 </template>
-
