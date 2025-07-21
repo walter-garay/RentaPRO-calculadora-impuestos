@@ -1,16 +1,10 @@
-FROM php:8.3-cli
+FROM php:8.2-cli
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm && \
+# Install system dependencies and Node.js LTS
+RUN apt-get update && \
+    apt-get install -y git curl zip unzip libpng-dev libonig-dev libxml2-dev && \
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -57,5 +51,5 @@ RUN php artisan config:clear || true \
     && php artisan view:cache || true
 
 # Expose port and start with better error handling
-EXPOSE $PORT
-CMD php -S 0.0.0.0:$PORT -t public/ || php artisan serve --host=0.0.0.0 --port=$PORT
+EXPOSE 8080
+CMD php -S 0.0.0.0:8080 -t public/ || php artisan serve --host=0.0.0.0 --port=8080
