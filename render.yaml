@@ -2,7 +2,7 @@ services:
   - type: web
     name: rentapro
     env: docker
-    plan: free  # Puedes omitir esta línea si estás usando el plan gratuito por defecto
+    plan: free # Puedes omitir esta línea si estás usando el plan gratuito por defecto
     envVars:
       - key: APP_NAME
         value: "RentaPRO"
@@ -34,6 +34,10 @@ services:
         value: root
       - key: DB_PASSWORD
         value: d1EFMUBCLqDhwco7Mnxk5HDHZG6DvaBv
+      - key: ASSET_URL
+        value: https://rentapro.onrender.com
+      - key: VITE_APP_URL
+        value: https://rentapro.onrender.com
     startCommand: |
       php artisan migrate --force
       php -S 0.0.0.0:8080 -t public/
